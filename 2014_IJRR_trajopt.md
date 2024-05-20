@@ -38,29 +38,21 @@ Our approach uses optimization in the same spirit as CHOMP, with the following k
 
 We performed a quantitative comparison between TrajOpt and several implementations of motion planning algorithms, including sampling based planners from OMPL (Sucan et al., 2012), as well as a recent implementation of CHOMP (Zucker et al., 2012). Overall, our experimental results indicate that TrajOpt was computationally faster than the alternatives on the considered benchmark (around $100-200 \mathrm{~ms}$ on arm-planning problems and solves full body 18 DOF planning problems for the PR2 robot in under a second on an Intel i7 $3.5 \mathrm{GHz}$ CPU), and solved a larger fraction of the problems given a specified time limit. We also applied TrajOpt to high-DOF motion problems, including physical experiments with the PR2 robot where we simultaneously need to plan for two arms along with the base and torso (Figure 1(b)), and for planning foot placements with $28 \mathrm{DOF}$ (+ 6 DOF pose) of the Atlas humanoid robot as it maintains static stability and avoids collisions (Figure 1(d)).
 
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=354&width=346&top_left_y=242&top_left_x=1073)
+<div style="display: flex; justify-content: space-around;">
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=354&width=346&top_left_y=242&top_left_x=1073" alt="(a)" />
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=360&width=350&top_left_y=239&top_left_x=1431" alt="(b)" />
+</div>
 
-(a)
+<div style="display: flex; justify-content: space-around;">
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=344&width=344&top_left_y=620&top_left_x=1074" alt="(c)" />
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=376&width=401&top_left_y=607&top_left_x=1427" alt="(d)" />
+</div>
 
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=344&width=344&top_left_y=620&top_left_x=1074)
+<div style="display: flex; justify-content: space-around;">
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=290&width=365&top_left_y=1007&top_left_x=1053" alt="(e)" />
+    <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=301&width=390&top_left_y=996&top_left_x=1435" alt="(f)" />
+</div>
 
-(c)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=290&width=365&top_left_y=1007&top_left_x=1053)
-
-(e)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=360&width=350&top_left_y=239&top_left_x=1431)
-
-(b)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=376&width=401&top_left_y=607&top_left_x=1427)
-
-(d)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-03.jpg?height=301&width=390&top_left_y=996&top_left_x=1435)
-
-(f)
 Fig. 1. TrajOpt applied to several motion planning scenarios: (a) planning an arm trajectory for the PR2 in simulation, (b) PR2 opening a door with a full-body motion, (c) industrial robot picking boxes, subject to an orientation constraint on the end effector, (d) humanoid robot model (DRC/Atlas) ducking underneath an obstacle while obeying static stability constraints, (e) multiple bevel-tip flexible needles inserted through the perineum to reach targets deep within the prostate following high-quality constant curvature trajectories, and (f) optimized layout for bounded curvature channels within 3D-printed vaginal implants for delivering radiation to $\mathrm{OB} / \mathrm{GYN}$ tumors.
 
 In this work, in addition to providing a revised and extended version of our work (Schulman et al., 2013), we (a) describe an extension to the algorithm described in the RSS paper to plan trajectories in $S E(3)$, and (b) provide a discussion on cases where trajectory optimization fails to find a feasible solution. Regarding (a), we consider the problem of planning curvature-constrained trajectories in 3D environments. This involves trajectory optimization over manifolds such as the $S E$ (3) Lie group, instead of just vector spaces of the form $\mathbb{R}^{n}$. We accomplish this by iteratively optimizing over increments to the trajectory, defined in terms of the corresponding Lie algebra-se(3) in our case (Saccon et al., 2013). We applied this extension of TrajOpt to two real-world clinical applications. First, we considered the problem of planning collision-free, constant curvature trajectories that avoid obstacles in the environment and optimize clinically relevant metrics for flexible, bevel-tip medical needles (Webster et al., 2006; Reed
@@ -230,8 +222,7 @@ where $\left\{\mathcal{A}_{i}\right\}$ is the collection of links of the robot, 
 
 $$
 \begin{align*}
-& \sum_{i=1}^{N_{\text {links }}} \sum_{j=1}^{N_{\text {obs }}}\left|d_{\text {safe }}-\operatorname{sd}\left(\mathcal{A}_{i}, \mathcal{O}_{j}\right)\right|^{+} \\
-+ & \sum_{i=1}^{N_{\text {links }}} \sum_{j=1}^{N_{\text {links }}}\left|d_{\text {safe }}-\operatorname{sd}\left(\mathcal{A}_{i}, \mathcal{B}_{j}\right)\right|^{+} \tag{10}
+& \sum_{i=1}^{N_{\text {links }}} \sum_{j=1}^{N_{\text {obs }}}\left|d_{\text {safe }}-\operatorname{sd}\left(\mathcal{A}_{i}, \mathcal{O}_{j}\right)\right|^{+} + & \sum_{i=1}^{N_{\text {links }}} \sum_{j=1}^{N_{\text {links }}}\left|d_{\text {safe }}-\operatorname{sd}\left(\mathcal{A}_{i}, \mathcal{B}_{j}\right)\right|^{+} \tag{10}
 \end{align*}
 $$
 
@@ -675,21 +666,27 @@ It is important to note that our approach is not a replacement for sampling-base
 
 Trajectory optimization for motion planning is a challenging non-convex constrained optimization problem. Given an initial trajectory that may contain collisions and violate constraints, trajectory optimization methods such as TrajOpt and CHOMP can often quickly converge to a highquality, locally optimal solution. However, these methods
 
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=360&width=394&top_left_y=258&top_left_x=1049)
+<div style="display: flex; justify-content: space-around;">
+    <div>
+        <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=360&width=394&top_left_y=258&top_left_x=1049" alt="(a)" />
+        <p>(a)</p>
+    </div>
+    <div>
+        <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=368&width=395&top_left_y=256&top_left_x=1435" alt="(b)" />
+        <p>(b)</p>
+    </div>
+</div>
 
-(a)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=311&width=394&top_left_y=661&top_left_x=1052)
-
-(c)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=368&width=395&top_left_y=256&top_left_x=1435)
-
-(b)
-
-![](https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=315&width=398&top_left_y=659&top_left_x=1434)
-
-(d)
+<div style="display: flex; justify-content: space-around;">
+    <div>
+        <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=311&width=394&top_left_y=661&top_left_x=1052" alt="(c)" />
+        <p>(c)</p>
+    </div>
+    <div>
+        <img src="https://cdn.mathpix.com/cropped/2024_05_20_396258b6592c6e2c33b3g-17.jpg?height=315&width=398&top_left_y=659&top_left_x=1434" alt="(d)" />
+        <p>(d)</p>
+    </div>
+</div>
 Fig. 12. Failure cases when using TrajOpt. (a) Initial path for full-body planning. (b) The trajectory optimization outcome, which is stuck in an infeasible condition. (c) The initial path for the arm planning and the collision cannot be resolved in the final trajectory $(\mathrm{d})$.
 
 suffer from a critical limitation: their performance heavily depends on the provided trajectory initialization and they are not guaranteed to find a collision-free solution as the no-collisions constraints in the optimization are non-convex.
